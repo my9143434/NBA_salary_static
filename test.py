@@ -25,14 +25,24 @@ def request(url):
 
 
 
-target_url = 'https://hoopshype.com/player/stephen-curry/salary/'
+target_url = 'https://hoopshype.com/player/chris-paul/salary/'
 response = request(target_url)
 
 parsed_html = BeautifulSoup(response.content, features="html.parser")
 
 
 agent_of_player = parsed_html.findAll(class_="player-fact")
-# print(agent_of_player[8].contents[1].contents[0])
-match = re.findall(r'His agent is <a.*>(.*)</a>', str(agent_of_player))
-print(match[0])
-# print(agent_of_player)
+print(agent_of_player)
+# match = re.findall(r'His agent is <a.*>(.*)</a>', str(agent_of_player))
+# print(match[0])
+
+
+# target_url = 'https://hoopshype.com/player/stephen-curry/salary/'
+# response = request(target_url)
+#
+# parsed_html = BeautifulSoup(response.content, features="html.parser")
+#
+#
+# agent_of_player = parsed_html.findAll(class_="player-fact")
+# match = re.findall(r'His agent is <a.*>(.*)</a>', str(agent_of_player))
+# print(match[0])

@@ -27,13 +27,19 @@ def get_player_salary(response):
         temp_response = request(temp_href)
         temp_parsed_html = BeautifulSoup(temp_response.content, features="html.parser")
         agent_of_player = temp_parsed_html.findAll(class_="player-fact")
-        try:
-            match = re.findall(r'His agent is <a.*>(.*)</a>', str(agent_of_player))[0]
-        except IndexError:
-            match = 'NULL'
-        print(match)
 
-        temp_list.append([temp, temp2, match])
+        match = re.findall(r'His agent is <a.*>(.*)</a>', str(agent_of_player))
+        if not match:
+            match = re.findall(r'His agents are <a.*>(.*)</a>', str(agent_of_player))
+
+        try:
+            temp_match = str(match[0])
+        except IndexError:
+            temp_match = 'Null'
+
+        print(temp_match)
+
+        temp_list.append([temp, temp2, temp_match])
         n += 1
     return temp_list
 
