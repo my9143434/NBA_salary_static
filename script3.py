@@ -1,5 +1,6 @@
 import requests
 import sqlite3
+import re
 from bs4 import BeautifulSoup
 
 
@@ -21,8 +22,18 @@ def get_player_salary(response):
     while n < len(stephen):
         temp = str(stephen[n].contents[1].contents[0]).strip()
         temp2 = int(str(curry[n].contents[0]).strip().replace("$", "").replace(",", ""))
+        temp_href = stephen[n].contents[1]['href']
 
-        temp_list.append([temp, temp2])
+        temp_response = request(temp_href)
+        temp_parsed_html = BeautifulSoup(temp_response.content, features="html.parser")
+        agent_of_player = temp_parsed_html.findAll(class_="player-fact")
+        try:
+            match = re.findall(r'His agent is <a.*>(.*)</a>', str(agent_of_player))[0]
+        except IndexError:
+            match = 'NULL'
+        print(match)
+
+        temp_list.append([temp, temp2, match])
         n += 1
     return temp_list
 
@@ -32,12 +43,12 @@ def insert_salary_players(player_salary_list):
     cur = conn.cursor()
 
     cur.execute('DROP TABLE IF EXISTS Players')
-    cur.execute('CREATE TABLE Players (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, salary INTEGER)')
+    cur.execute('CREATE TABLE Players (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, salary INTEGER, agent_id TEXT)')
     for a in player_salary_list:
-        cur.execute('SELECT * FROM Players WHERE (name=? AND salary=?)', (a[0], a[1]))
+        cur.execute('SELECT * FROM Players WHERE (name=? AND salary=? AND agent_id=?)', (a[0], a[1], a[2]))
         entry = cur.fetchone()
         if entry == None:
-            cur.execute('''INSERT INTO Players (name, salary) VALUES (?, ?)''', (a[0], a[1]))
+            cur.execute('''INSERT INTO Players (name, salary, agent_id) VALUES (?, ?, ?)''', (a[0], a[1], a[2]))
 
     conn.commit()
 
