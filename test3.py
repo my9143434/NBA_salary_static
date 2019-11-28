@@ -39,11 +39,14 @@ def players_get_api_id():
             list_of_dicts = r.json()
             # time.sleep(1)
             temp_eff = (get_eff(list_of_dicts["data"][0]["id"]))
-            # print(type(temp_eff))
+            # print(list_of_dicts["data"][0])
+            # print(list_of_dicts["data"][0]['id'])       # api id
+            # print(list_of_dicts["data"][0]['team']['full_name'])       # team
+
             temp_name = str(name)[2:-3]
             print(temp_name)
 
-            cur.execute('''UPDATE Players SET efficiency = ? WHERE name = (?) ''', (temp_eff, temp_name))
+            cur.execute('''UPDATE Players SET efficiency = ?, api_id = ?, team = ? WHERE name = (?) ''', (temp_eff, int(list_of_dicts["data"][0]['id']), str(list_of_dicts["data"][0]['team']['full_name']), temp_name))
 
         except json.decoder.JSONDecodeError:
             continue
@@ -53,12 +56,19 @@ def players_get_api_id():
 
 
 def add_column():
-    add_column = "ALTER TABLE Players ADD COLUMN efficiency REAL"
-    cur.execute(add_column)
+    try:
+        add_column = "ALTER TABLE Players ADD COLUMN efficiency"
+        cur.execute(add_column)
+        add_column = "ALTER TABLE Players ADD COLUMN api_id INTEGER"
+        cur.execute(add_column)
+        add_column = "ALTER TABLE Players ADD COLUMN team TEXT"
+        cur.execute(add_column)
+    except sqlite3.OperationalError:
+        pass
 
 
 conn = sqlite3.connect('test.db')
 cur = conn.cursor()
-# add_column()
+add_column()
 players_get_api_id()
 
