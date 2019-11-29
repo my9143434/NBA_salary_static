@@ -39,10 +39,6 @@ def players_get_api_id():
             list_of_dicts = r.json()
             # time.sleep(1)
             temp_eff = (get_eff(list_of_dicts["data"][0]["id"]))
-            # print(list_of_dicts["data"][0])
-            # print(list_of_dicts["data"][0]['id'])       # api id
-            # print(list_of_dicts["data"][0]['team']['full_name'])       # team
-
             temp_name = str(name)[2:-3]
             print(temp_name)
 

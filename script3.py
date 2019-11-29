@@ -37,7 +37,7 @@ def get_player_salary(response):
         except IndexError:
             temp_match = 'Null'
 
-        print(temp_match)
+        print("\r", temp_match, end="")
 
         temp_list.append([temp, temp2, temp_match])
         n += 1
@@ -64,10 +64,8 @@ def insert_salary_players(player_salary_list):
 
     conn.commit()
 
-# https://hoopshype.com/reps/
-# https://www.balldontlie.io/
 
-
+print("Running script3.py [Extracting from https://hoopshype.com/salaries/players/)] ......")
 target_url = 'https://hoopshype.com/salaries/players/'
 response = request(target_url)
 player_salary_list = get_player_salary(response)

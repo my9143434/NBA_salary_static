@@ -25,31 +25,3 @@ insert_url = "https://www.balldontlie.io/api/v1/players?search=" + "John Wall"
 r = requests.get(insert_url, verify=False)
 list_of_dicts = r.json()
 print(get_eff(list_of_dicts["data"][0]["id"]))
-
-
-
-
-
-
-# print(type(r))
-# print(list_of_dicts)
-
-# for i in list_of_dicts["data"]:
-#     print(i["id"])
-
-# for a in list_of_dicts["meta"]:
-#     print(i["id"])
-
-# print(list_of_dicts["last_name"])
-# print(list_of_dicts["first_name"])
-# connect1 = str(list_of_dicts["first_name"]) + " " +str(list_of_dicts["last_name"])
-# print(connect1)
-
-# conn = sqlite3.connect('test.db')
-# cur = conn.cursor()
-#
-# cur.execute('SELECT name FROM Players WHERE (name=?)', (connect1,))
-#
-# entry = cur.fetchone()
-# if entry != None:
-#     print(list_of_dicts["id"])

@@ -24,9 +24,9 @@ def get_eff(id):
 
 
 def players_get_api_id():
-    urllib3.disable_warnings()
-    conn = sqlite3.connect('test.db')
-    cur = conn.cursor()
+    # urllib3.disable_warnings()
+    # conn = sqlite3.connect('nba.db')
+    # cur = conn.cursor()
 
     cur.execute('SELECT name FROM Players')
     results1 = cur.fetchall()
@@ -44,7 +44,7 @@ def players_get_api_id():
             # print(list_of_dicts["data"][0]['team']['full_name'])       # team
 
             temp_name = str(name)[2:-3]
-            print(temp_name)
+            print("\r", temp_name, end="")
 
             cur.execute('''UPDATE Players SET efficiency = ?, api_id = ?, team = ? WHERE name = (?) ''', (temp_eff, int(list_of_dicts["data"][0]['id']), str(list_of_dicts["data"][0]['team']['full_name']), temp_name))
 
@@ -67,7 +67,9 @@ def add_column():
         pass
 
 
-conn = sqlite3.connect('test.db')
+urllib3.disable_warnings()
+print("\nRunning script2.py [Extracting from Balldontlie API] ......")
+conn = sqlite3.connect('nba.db')
 cur = conn.cursor()
 add_column()
 players_get_api_id()
