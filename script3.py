@@ -49,7 +49,7 @@ def insert_salary_players(player_salary_list):
     cur = conn.cursor()
 
     cur.execute('DROP TABLE IF EXISTS Players')
-    cur.execute('CREATE TABLE Players (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, salary INTEGER, agent_id INTEGER)')
+    cur.execute('CREATE TABLE Players (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, salary INTEGER, agents_id INTEGER)')
     for a in player_salary_list:
         cur.execute('SELECT id FROM Agents WHERE (name=?)', (a[2],))
         try:
@@ -57,10 +57,10 @@ def insert_salary_players(player_salary_list):
         except ValueError:
             temp_agent_id = None
 
-        cur.execute('SELECT * FROM Players WHERE (name=? AND salary=? AND agent_id=?)', (a[0], a[1], temp_agent_id))
+        cur.execute('SELECT * FROM Players WHERE (name=? AND salary=? AND agents_id=?)', (a[0], a[1], temp_agent_id))
         entry = cur.fetchone()
         if entry == None:
-            cur.execute('''INSERT INTO Players (name, salary, agent_id) VALUES (?, ?, ?)''', (a[0], a[1], temp_agent_id))
+            cur.execute('''INSERT INTO Players (name, salary, agents_id) VALUES (?, ?, ?)''', (a[0], a[1], temp_agent_id))
 
     conn.commit()
 

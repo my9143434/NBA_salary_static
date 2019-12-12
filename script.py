@@ -19,7 +19,8 @@ def get_agent_list(response):
 
     temp_list = []
     n = 1
-    while n < 138:
+    while n < 137:
+        # print(agent[n])
         temp_name = str(agent[n].contents[1].contents[0]).strip()
         temp_href = agent[1].contents[1]['href']
 
