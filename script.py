@@ -44,7 +44,6 @@ def insert_agent(agent_list):
     conn.commit()
 
 
-
 print("Running script.py [Extracting from https://hoopshype.com/reps/)].......")
 target_url = 'https://hoopshype.com/reps/'
 response = request(target_url)
